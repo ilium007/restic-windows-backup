@@ -16,9 +16,9 @@ $SendEmailOnSuccess = $false
 $SendEmailOnError = $true
 
 # healthchecks.io success / fail URL's
-send_healthcheck = $false
-healthcheck_success = $null
-healthcheck_fail = $null
+$SendHealthcheck = $false
+$HealthcheckSuccess = $null
+$HealthcheckFail = $null
 
 # backup configuration
 $WindowsExcludeFile = Join-Path $InstallPath "windows.exclude"
