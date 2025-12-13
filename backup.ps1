@@ -585,9 +585,9 @@ function Invoke-Main {
                 # successful backup
                 "[[Backup]] Succeeded after $total_attempts attempt(s)" | Tee-Object -Append $success_log | Write-Host
                 
-                # call healhcheck.io success endpoint
-                if(($send_healthcheck -eq $true) -and ($healthcheck_success)) {
-                    Invoke-RestMethod $healthcheck_success
+                # call healthcheck.io success endpoint
+                if(($send_healthcheck -eq $true) -and ($null -ne $healthcheck_success)) {
+                    Invoke-RestMethod $healthcheck_success  | Out-Null
                 }
 
                 # test to see if maintenance is needed if the backup was successful
@@ -596,10 +596,10 @@ function Invoke-Main {
             else {
                 "[[Backup]] Ran with errors on attempt $total_attempts" | Tee-Object -Append $success_log | Tee-Object -Append $error_log | Write-Host
                 $error_count++
-                
-                # call healhcheck.io fail endpoint
-                if(($send_healthcheck -eq $true) -and ($healthcheck_fail)) {
-                    Invoke-RestMethod $healthcheck_fail
+
+                # call healthcheck.io fail endpoint
+                if(($send_healthcheck -eq $true) -and ($null -ne $healthcheck_fail)) {
+                    Invoke-RestMethod $healthcheck_fail  | Out-Null
                 }
             }
         }
