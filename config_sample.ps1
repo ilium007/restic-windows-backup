@@ -16,7 +16,7 @@ $SendEmailOnSuccess = $false
 $SendEmailOnError = $true
 
 # healthchecks.io success / fail URL's
-send_healthcheck = $true
+send_healthcheck = $false
 healthcheck_success = $null
 healthcheck_fail = $null
 
