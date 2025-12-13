@@ -15,6 +15,10 @@ $GlobalRetryAttempts = 4
 $SendEmailOnSuccess = $false
 $SendEmailOnError = $true
 
+# healthchecks.io success / fail URL's
+healthcheck_success = ""
+healthcheck_fail = ""
+
 # backup configuration
 $WindowsExcludeFile = Join-Path $InstallPath "windows.exclude"
 $LocalExcludeFile = Join-Path $InstallPath "local.exclude"
