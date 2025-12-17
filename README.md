@@ -9,6 +9,7 @@ Simplifies the process of installation and running daily backups.
 * **Easy to update** - `update.ps1` script can be used to keep your scripts up to date with the latest release on GitHub
 * **Backup, Maintenance and Monitoring are Automated** - `backup.ps1` script handles
   * Emailing the results of each execution, including log files when there are problems
+  * Call a hook URL on success / failure
   * Runs routine maintenence (pruning and checking the repo for errors on a regular basis)
   * And, of course backing up your files.
   
