@@ -523,6 +523,15 @@ function Invoke-HistoryCheck {
     }
 }
 
+# call hook URL
+function Invoke-HookCall {
+    Param($URL)
+    
+    if(($CallHook -eq $true) -and ($null -ne $URL)) {
+        Invoke-RestMethod $URL  | Out-Null
+    } 
+}
+
 # main function
 function Invoke-Main {
 
@@ -584,11 +593,6 @@ function Invoke-Main {
             if($backup_success -eq $true) {
                 # successful backup
                 "[[Backup]] Succeeded after $total_attempts attempt(s)" | Tee-Object -Append $success_log | Write-Host
-                
-                # call healthcheck.io success endpoint
-                if(($SendHealthcheck -eq $true) -and ($null -ne $HealthcheckSuccess)) {
-                    Invoke-RestMethod $HealthcheckSuccess  | Out-Null
-                }
 
                 # test to see if maintenance is needed if the backup was successful
                 $maintenance_needed = Test-Maintenance $success_log $error_log
@@ -596,11 +600,6 @@ function Invoke-Main {
             else {
                 "[[Backup]] Ran with errors on attempt $total_attempts" | Tee-Object -Append $success_log | Tee-Object -Append $error_log | Write-Host
                 $error_count++
-
-                # call healthcheck.io fail endpoint
-                if(($SendHealthcheck -eq $true) -and ($null -ne $HealthcheckFail)) {
-                    Invoke-RestMethod $HealthcheckFail  | Out-Null
-                }
             }
         }
         else {
@@ -714,6 +713,13 @@ function Invoke-Main {
 
     # cleanup older log files
     Get-ChildItem $Script:LogPath | Where-Object {$_.CreationTime -lt $(Get-Date).AddDays(-$LogRetentionDays)} | Remove-Item
+
+    # call hook URL's
+    if ($error_count -gt 0) {
+        Invoke-HookCall $HookFail
+    } else {
+        Invoke-HookCall $HookSuccess
+    }
 
     exit $error_count
 }
